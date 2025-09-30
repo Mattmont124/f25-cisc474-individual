@@ -42,7 +42,7 @@ model Enrollment {
   user     User     @relation(fields: [userId], references: [id])
   userId   String
   course   Course   @relation(fields: [courseId], references: [id])
-  courseId String?
+  courseId String
   role     String     // e.g. STUDENT, TA
 }
 
@@ -52,7 +52,7 @@ model Assignment {
   description String?
   dueDate     DateTime?
   course      Course       @relation(fields: [courseId], references: [id])
-  courseId    String?     //optional       
+  courseId    String     //not optional      
   submissions Submission[]
 }
 
