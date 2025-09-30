@@ -43,7 +43,7 @@ model Enrollment {
   userId   String
   course   Course   @relation(fields: [courseId], references: [id])
   courseId String?
-  role     Role     // e.g. STUDENT, TA
+  role     String     // e.g. STUDENT, TA
 }
 
 model Assignment {
