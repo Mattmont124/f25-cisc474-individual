@@ -2,6 +2,7 @@
   "name": "cisc474-project-starter",
   "private": true,
   "scripts": {
+    "start": "turbo run start --filter=api",
     "build": "turbo run build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
@@ -13,6 +14,7 @@
     "db:migrate:dev": "turbo run db:migrate:dev",
     "db:push": "turbo run db:push",
     "db:seed": "turbo run db:seed"
+
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
