@@ -1,7 +1,11 @@
-import React from "react";
-import styles from "../page.module.css"; // Adjust the path if needed
+import { createFileRoute } from "@tanstack/react-router";
+import styles from "../styles/page.module.css";
 
-const Admin: React.FC = () => {
+export const Route = createFileRoute("/admin")({
+  component: AdminPage,
+});
+
+function AdminPage() {
   return (
     <div className={styles.container}>
       <header className={styles.topBar}>
@@ -15,6 +19,4 @@ const Admin: React.FC = () => {
       </main>
     </div>
   );
-};
-
-export default Admin;
+}

@@ -1,9 +1,48 @@
-import { createFileRoute } from '@tanstack/react-router';
+// src/routes/index.tsx
+import { Link, createFileRoute } from '@tanstack/react-router';
+import styles from '../styles/page.module.css';
 
 export const Route = createFileRoute('/')({
-  component: RouteComponent,
+  component: Home,
 });
 
-function RouteComponent() {
-  return <div>Hello "/"!</div>;
+function Home() {
+  return (
+    <div className={styles.container}>
+      {/* Top Bar */}
+      <header className={styles.topBar}>
+        <Link to="/student">
+          <button className={styles.left}>Student Sign In</button>
+        </Link>
+        <div className={styles.center}>Welcome to Course Homepage</div>
+        <Link to="/help">
+          <button className={styles.right}>?</button>
+        </Link>
+      </header>
+
+      {/* Classes Grid */}
+      <main className={styles.classesGrid}>
+        {Array.from({ length: 6 }, (_, i) => (
+          <div key={i} className={styles.classBox}>
+            <Link to="/class/$id" params={{ id: String(i + 1) }} className={styles.classLink}>
+              Class {i + 1}
+            </Link>
+          </div>
+        ))}
+      </main>
+
+      {/* Footer */}
+      <footer className={styles.signInButtons}>
+        <Link to="/instructor">
+          <button>Instructor Sign In</button>
+        </Link>
+        <Link to="/admin">
+          <button>Admin Sign In</button>
+        </Link>
+        <Link to="/it">
+          <button>IT Sign In</button>
+        </Link>
+      </footer>
+    </div>
+  );
 }
