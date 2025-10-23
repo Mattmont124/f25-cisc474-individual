@@ -7,7 +7,7 @@
     "generate": "cd ../database && npx prisma generate",
     "types": "tsc -p tsconfig.types.json",
     "dev": "npm run generate && tsup src/* --format cjs,esm --watch --onSuccess \"npm run types\"",
-    "build": "npm run generate && tsup src/* --format cjs,esm && npm run types",
+    "build": "npm run generate",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
   },
   "main": "./dist/index.js",
