@@ -4,9 +4,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "generate": "cd ../database && npx prisma generate",
     "types": "tsc -p tsconfig.types.json",
-    "dev": "tsup src/* --format cjs,esm --watch --onSuccess \"npm run types\"",
-    "build": "tsup src/* --format cjs,esm && npm run types",
+    "dev": "npm run generate && tsup src/* --format cjs,esm --watch --onSuccess \"npm run types\"",
+    "build": "npm run generate && tsup src/* --format cjs,esm && npm run types",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
   },
   "main": "./dist/index.js",
