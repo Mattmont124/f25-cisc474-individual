@@ -18,7 +18,7 @@
     "db:seed": "tsx src/seed.ts",
     "types": "tsc -p tsconfig.types.json",
     "dev": "tsup src/* --format cjs,esm --watch --onSuccess \"npm run types\"",
-    "build": "tsup src/* --format cjs,esm && npm run types",
+    "build": "npm run generate",
     "format": "prisma format",
     "generate": "prisma generate",
     "lint": "eslint . --max-warnings 0",
