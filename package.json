@@ -36,11 +36,13 @@
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
+    "@tailwindcss/oxide": "^4.1.16",
     "@tanstack/react-query": "^5.90.5",
     "@tanstack/react-query-devtools": "^5.90.2",
     "@tanstack/react-router": "^1.133.27",
     "@tanstack/react-router-devtools": "^1.133.27",
-    "@tanstack/router-core": "^1.133.27"
+    "@tanstack/router-core": "^1.133.27",
+    "tailwindcss": "^4.1.16"
   },
   "packageManager": "npm@10.9.0",
   "workspaces": [
