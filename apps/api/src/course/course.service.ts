@@ -13,6 +13,6 @@ export class CourseService {
   }
 
   findOne(id: number) {
-    return this.courses.find((course) => course.id === id);
+    return this.courses.find((course) => course.id === id) || null;
   }
 }

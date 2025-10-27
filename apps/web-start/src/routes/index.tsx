@@ -1,20 +1,39 @@
 // src/routes/index.tsx
 import { Link, createFileRoute } from '@tanstack/react-router';
+import { useAuth0 } from '@auth0/auth0-react';
 import styles from '../styles/page.module.css';
+import { ProtectedRoute } from '../routes/components/ProtectedRoute';
 
 export const Route = createFileRoute('/')({
-  component: Home,
+  component: () => (
+    <ProtectedRoute>
+      <Home />
+    </ProtectedRoute>
+  ),
 });
 
 function Home() {
+  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+
   return (
     <div className={styles.container}>
       {/* Top Bar */}
       <header className={styles.topBar}>
-        <Link to="/student">
-          <button className={styles.left}>Student Sign In</button>
-        </Link>
-        <div className={styles.center}>Welcome to Course Homepage</div>
+        {!isAuthenticated ? (
+          <button className={styles.left} onClick={() => loginWithRedirect()}>
+            Login
+          </button>
+        ) : (
+          <button
+  className={styles.left}
+  onClick={() =>
+    logout({ logoutParams: { returnTo: window.location.origin } })}>  Logout</button>
+        )}
+        <div className={styles.center}>
+          {isAuthenticated
+            ? `Welcome, ${user?.name || user?.email}`
+            : 'Welcome to Course Homepage'}
+        </div>
         <Link to="/help">
           <button className={styles.right}>?</button>
         </Link>
@@ -24,7 +43,11 @@ function Home() {
       <main className={styles.classesGrid}>
         {Array.from({ length: 6 }, (_, i) => (
           <div key={i} className={styles.classBox}>
-            <Link to="/class/$id" params={{ id: String(i + 1) }} className={styles.classLink}>
+            <Link
+              to="/class/$id"
+              params={{ id: String(i + 1) }}
+              className={styles.classLink}
+            >
               Class {i + 1}
             </Link>
           </div>
