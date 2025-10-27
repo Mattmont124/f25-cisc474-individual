@@ -4,3 +4,6 @@ export {
   CourseRef,
   CourseUpdateIn,
 } from './courses';
+export {
+  UserRef,
+} from './users';

@@ -4,15 +4,14 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-  "generate": "cd ../database && npx prisma generate",
-  "types": "tsc -p tsconfig.types.json",
-  "dev": "npm run generate && tsup src/* --format cjs,esm --watch --onSuccess \"npm run types\"",
-  "build": "npm run generate && tsup src/* --format cjs,esm",
-  "start": "node dist/index.js",
-  "start:prod": "node dist/index.js",
-  "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
-},
-
+    "generate": "cd ../database && npx prisma generate",
+    "types": "tsc -p tsconfig.types.json",
+    "dev": "npm run generate && tsup src/* --format cjs,esm --watch --onSuccess \"npm run types\"",
+    "build": "npm run generate && tsup src/* --format cjs,esm",
+    "start": "node dist/index.js",
+    "start:prod": "node dist/index.js",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -43,7 +42,7 @@
   },
   "dependencies": {
     "@nestjs/mapped-types": "*",
-    "zod": "^4.1.11"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
