@@ -21,6 +21,7 @@
     "@tanstack/router-cli": "^1.133.20",
     "prettier": "^3.6.2",
     "prisma": "^6.16.2",
+    "rollup": "^4.52.5",
     "tsx": "4.19.1",
     "turbo": "^2.5.6",
     "typescript": "5.9.2"
