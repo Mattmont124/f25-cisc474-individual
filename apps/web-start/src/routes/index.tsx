@@ -2,17 +2,13 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { useAuth0 } from '@auth0/auth0-react';
 import styles from '../styles/page.module.css';
-import { ProtectedRoute } from '../routes/components/ProtectedRoute';
+import LoginButton from '../routes/components/LoginButton';
 
 export const Route = createFileRoute('/')({
-  component: () => (
-    <ProtectedRoute>
-      <Home />
-    </ProtectedRoute>
-  ),
+  component: RouteComponent,
 });
 
-function Home() {
+function RouteComponent() {
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
   return (

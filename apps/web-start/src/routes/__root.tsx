@@ -37,7 +37,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
-
+  notFoundComponent: () => <div>404: Page Not Found</div>,
   shellComponent: RootDocument,
 });
 
@@ -48,7 +48,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <main className="container-fluid">{children}</main>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
