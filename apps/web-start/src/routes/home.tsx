@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import styles from '../styles/page.module.css';
 import { CourseOut } from '../../../../packages/api/src/courses';
 
@@ -8,31 +8,27 @@ export const Route = createFileRoute('/home')({
   component: RouteComponent,
 });
 
+async function fetchCourses(token: string): Promise<Array<CourseOut>> {
+  const res = await fetch('/api/courses', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch courses');
+  }
+  return res.json();
+}
+
 function RouteComponent() {
   const { user, isAuthenticated, isLoading, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
-  const [courses, setCourses] = useState<CourseOut[]>([]);
-  const [loadingCourses, setLoadingCourses] = useState(true);
 
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const fetchCourses = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        const res = await fetch('/api/courses', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data: CourseOut[] = await res.json();
-        setCourses(data);
-      } catch (err) {
-        console.error('Failed to fetch courses', err);
-      } finally {
-        setLoadingCourses(false);
-      }
-    };
-
-    fetchCourses();
-  }, [isAuthenticated, getAccessTokenSilently]);
+  const { data: courses = [], isLoading: loadingCourses } = useQuery<Array<CourseOut>>({
+    queryKey: ['courses'],
+    queryFn: async () => {
+      const token = await getAccessTokenSilently();
+      return fetchCourses(token);
+    },
+    enabled: isAuthenticated,
+  });
 
   if (isLoading) return <div className={styles.container}>Loading...</div>;
   if (!isAuthenticated) {

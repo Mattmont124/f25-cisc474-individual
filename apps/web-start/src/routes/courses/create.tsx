@@ -1,7 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useApiMutation, useCurrentUser } from '../../integrations/api';
-import { CourseCreateIn, CourseOut } from '../../../../../packages/api/src/courses'
+import { CourseCreateIn, CourseOut } from '@repo/api';
 
 export const Route = createFileRoute('/courses/create')({
   component: RouteComponent,
@@ -12,13 +13,14 @@ function RouteComponent() {
   const [newName, setNewName] = useState('');
   const [newDescription, setNewDescription] = useState('');
 
+  const queryClient = useQueryClient();
+
   const mutation = useApiMutation<CourseCreateIn, CourseOut>({
-    endpoint: () => ({
-      path: '/home',
+    endpoint: (variables) => ({
+      path: '/api/src/course',
       method: 'POST',
     }),
-    // invalidateKeys expects a readonly array of string tuples
-    invalidateKeys: [['home']] as const,
+    invalidateKeys: [['courses']],
   });
 
   return (
@@ -26,20 +28,17 @@ function RouteComponent() {
       <header>
         <h1>Create a New Course</h1>
       </header>
-
       {mutation.isPending ? (
         <div>Creating course...</div>
       ) : (
         <>
-          {mutation.isError && (
+          {mutation.isError ? (
             <div>Error creating course: {mutation.error.message}</div>
-          )}
-          {mutation.isSuccess && (
+          ) : null}
+          {mutation.isSuccess ? (
             <div>Course created successfully! ID: {mutation.data.id}</div>
-          )}
-
-          <hr />
-
+          ) : null}
+          <hr></hr>
           <div>
             <input
               type="text"
@@ -48,7 +47,6 @@ function RouteComponent() {
               onChange={(e) => setNewName(e.target.value)}
             />
           </div>
-
           <div>
             <input
               type="text"
@@ -57,24 +55,21 @@ function RouteComponent() {
               onChange={(e) => setNewDescription(e.target.value)}
             />
           </div>
-
+          <div></div>
           <div>
             <button
               onClick={() => {
-                if (!currentUser?.id) return; // prevent undefined ownerId
                 mutation.mutate({
                   name: newName,
-                  description: newDescription || null,
-                  ownerId: currentUser.id,
+                  description: newDescription,
+                  ownerId: currentUser?.id || '',
                 });
               }}
             >
               Create Course
             </button>
           </div>
-
-          <hr />
-
+          <hr></hr>
           <div>
             <a href="/home">Back to Courses</a>
           </div>

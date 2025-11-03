@@ -33,7 +33,7 @@ function RouteComponent() {
       </main>
 
       <footer className={styles.signInButtons}>
-        <p>© 2025 LMS System</p>
+        <p></p>
       </footer>
     </div>
   );
