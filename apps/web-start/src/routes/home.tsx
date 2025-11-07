@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useQuery } from '@tanstack/react-query';
+import type { CourseOut } from '@repo/api/courses';
 import styles from '../styles/page.module.css';
-import { CourseOut } from '../../../../packages/api/src/courses';
+
 
 export const Route = createFileRoute('/home')({
   component: RouteComponent,

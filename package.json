@@ -2,7 +2,6 @@
   "name": "cisc474-project-starter",
   "private": true,
   "scripts": {
-    "start": "turbo run start --filter=api",
     "build": "turbo run build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",

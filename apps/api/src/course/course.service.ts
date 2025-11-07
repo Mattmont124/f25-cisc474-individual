@@ -1,37 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { prisma } from '@repo/database/src/client'; // adjust path as needed
-import { CourseCreateIn } from '../../../../packages/api/src/courses';
+import { PrismaService } from '../prisma.service'; // adjust path as needed
+import { CourseCreateIn, CourseOut, CourseUpdateIn } from '@repo/api/courses';
 
 @Injectable()
 export class CourseService {
   // --- GET /courses ---
-  async findAll() {
-    return prisma.course.findMany({
-      include: {
-        instructor: true, // optional: include related instructor data
-      },
+  constructor(private prisma: PrismaService) {}
+  async create (createCourse: CourseCreateIn): Promise<CourseOut> {
+    const newCourse = await this.prisma.course.create({
+      data: createCourse,
     });
+    return {
+      name: newCourse.name,
+      description: newCourse.description,
+      ownerId: newCourse.ownerId,
+      id: newCourse.id,
+      createdAt: newCourse.createdAt.toString(),
+      updatedAt: newCourse.updatedAt.toString(),
+        };
   }
 
   // --- GET /courses/:id ---
-  async findOne(id: string) {
-    return prisma.course.findUnique({
+  findAll() {
+    return this.prisma.course.findMany();
+  }
+
+  findOne(id: string) {
+    return this.prisma.course.findUnique({
       where: { id },
-      include: {
-        instructor: true,
-        assignments: true,
-      },
     });
   }
 
-  // --- POST /courses ---
-  async create(data: CourseCreateIn) {
-    return prisma.course.create({
-      data: {
-        title: data.name,
-        description: data.description ?? null,
-        instructorId: data.ownerId,
-      },
+  update(id: string, updateCourseDto: CourseUpdateIn) {
+    return this.prisma.course.update({
+      where: { id },
+      data: updateCourseDto,
+    });
+  }
+
+  remove(id: string) {
+    return this.prisma.course.delete({
+      where: { id },
     });
   }
 }
