@@ -18,7 +18,7 @@ export class UserController {
   // Get a specific user by ID
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(Number(id));
+    return this.userService.findOne(String(id));
   }
 
   // Get the current authenticated user's info

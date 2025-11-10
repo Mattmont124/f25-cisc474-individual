@@ -13,7 +13,7 @@ export class CourseService {
     return {
       name: newCourse.name,
       description: newCourse.description,
-      ownerId: newCourse.ownerId,
+      ownerId: newCourse.id,
       id: newCourse.id,
       createdAt: newCourse.createdAt.toString(),
       updatedAt: newCourse.updatedAt.toString(),

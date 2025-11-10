@@ -1,32 +1,15 @@
 import { Injectable } from '@nestjs/common';
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class UserService {
-  // Sample users for demonstration
-  private users: User[] = [
-    { id: 1, name: 'Alice Johnson', email: 'alice@example.com' },
-    { id: 2, name: 'Bob Smith', email: 'bob@example.com' },
-    { id: 3, name: 'Charlie Brown', email: 'charlie@example.com' },
-  ];
+  constructor(private prisma: PrismaService) {}
 
-  // Return all users
-  findAll(): User[] {
-    return this.users;
+  findAll() {
+    return this.prisma.user.findMany();
   }
 
-  // Return a single user by ID
-  findOne(id: number): User | null {
-    return this.users.find(user => user.id === id) || null;
-  }
-
-  // Optionally, find a user by email (useful for Auth0 integration)
-  findByEmail(email: string): User | null {
-    return this.users.find(user => user.email === email) || null;
+  findOne(id: string) {
+    return this.prisma.user.findUnique({ where: { id } });
   }
 }
