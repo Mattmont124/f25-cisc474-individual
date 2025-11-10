@@ -4,14 +4,14 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UsersService } from './user.service';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
@@ -20,7 +20,7 @@ export class UserController {
     if (!auth || !auth.userId) {
       throw new UnauthorizedException();
     }
-    const user = await this.userService.findOne(auth.userId);
+    const user = await this.usersService.findOne(auth.userId);
     if (!user) {
       throw new Error('User not found');
     }
@@ -36,16 +36,16 @@ export class UserController {
 
   @Get()
   findAll() {
-    return this.userService.findAll();
+    return this.usersService.findAll();
   }
 
   @Get(':id')
   findOne(id: string) {
-    return this.userService.findOne(id);
+    return this.usersService.findOne(id);
   }
 
   @Get('by-email/:email')
   findByEmail(email: string) {
-    return this.userService.findOne(email);
+    return this.usersService.findOne(email);
   }
 }
