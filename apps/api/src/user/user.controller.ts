@@ -1,29 +1,51 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { CurrentUser } from '../auth/current-user.decorator';
+import {
+  Controller,
+  Get,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import { JwtUser } from 'src/auth/jwt.strategy';
+import { AuthGuard } from '@nestjs/passport';
 
-@Controller('user')
-@UseGuards(AuthGuard('jwt')) // Protect all routes with JWT Auth
+@Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private userService: UserService) {}
 
-  // Get all users
+  @UseGuards(AuthGuard('jwt'))
+  @Get('me')
+  async me(@CurrentUser() auth: JwtUser) {
+    console.log(auth);
+    if (!auth || !auth.userId) {
+      throw new UnauthorizedException();
+    }
+    const user = await this.userService.findOne(auth.userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    // Return only what your client needs (include the DB id!)
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      // optionally roles, picture, etc.
+    };
+  }
+
   @Get()
-  findAll(@CurrentUser() user) {
-    console.log('Authenticated user:', user);
+  findAll() {
     return this.userService.findAll();
   }
 
-  // Get a specific user by ID
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(String(id));
+  findOne(id: string) {
+    return this.userService.findOne(id);
   }
 
-  // Get the current authenticated user's info
-  @Get('me')
-  getCurrentUser(@CurrentUser() user) {
-    return user;
+  @Get('by-email/:email')
+  findByEmail(email: string) {
+    return this.userService.findOne(email);
   }
 }
