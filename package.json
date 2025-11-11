@@ -45,6 +45,9 @@
     "tailwindcss": "^4.1.16",
     "ts-node": "^10.9.2"
   },
+  "optionalDependencies": {
+  "@rollup/rollup-linux-x64-gnu": "4.21.0"
+},
   "packageManager": "npm@10.9.0",
   "workspaces": [
     "apps/*",
