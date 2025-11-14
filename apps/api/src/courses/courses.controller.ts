@@ -8,7 +8,7 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { CourseService } from './course.service';
+import { CourseService } from './courses.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { CourseCreateIn, CourseUpdateIn } from '@repo/api/courses'; // shared DTO type
