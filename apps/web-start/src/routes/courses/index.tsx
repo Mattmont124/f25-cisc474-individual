@@ -1,58 +1,75 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { Link, createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { useApiQuery, useCurrentUser } from '../../integrations/api';
-import { CourseOut } from '@repo/api';
+import type { CourseOut } from '@repo/api';
+import styles from '../../styles/page.module.css';
 
 export const Route = createFileRoute('/courses/')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { data: user } = useCurrentUser();
-  const query = useApiQuery<Array<CourseOut>>(['courses'], '/courses');
+  const { data: user, isLoading: userLoading, isAuthPending } = useCurrentUser();
+  const { data: courses, showLoading, error, refetch } = useApiQuery<Array<CourseOut>>(
+    ['courses'],
+    '/courses'
+  );
 
-  const { data, refetch, error, showLoading } = query;
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
+  if (isAuthPending || userLoading || showLoading) {
+    return <div className={styles.container}>Loading...</div>;
   }
 
-  if (showLoading) return <div>Loading...</div>;
+  if (error) {
+    return <div className={styles.container}>Error: {error.message}</div>;
+  }
 
-  if (!data || data.length === 0) {
-    return <div>No courses found.</div>;
+  if (!courses || courses.length === 0) {
+    return <div className={styles.container}>No courses found.</div>;
   }
 
   return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/courses/create">Create a New Course</Link>
-          </li>
-          <li>
-            <Link to="/"> Home</Link>
-          </li>
-        </ul>
-      </nav>
-      <div>
-        Welcome {user?.name} (ID: {user?.id}) to the Courses page!
-      </div>
-      Courses:
-      <article>
-        {data.map((course) => (
-          <header key={course.id}>
+    <div className={styles.container}>
+      {/* Top Bar */}
+      <header className={styles.topBar}>
+        <Link to="/home">
+          <button className={styles.left}>Home</button>
+        </Link>
+
+        <div className={styles.center}>
+          {`Welcome, ${user?.name || user?.email}`}
+        </div>
+
+        <Link to="/help">
+          <button className={styles.right}>?</button>
+        </Link>
+      </header>
+
+      {/* Courses Grid */}
+      <main className={styles.classesGrid}>
+        {courses.map((course) => (
+          <div key={course.id} className={styles.classBox}>
             <Link to="/courses/$courseId" params={{ courseId: course.id }}>
               {course.name}
             </Link>
-          </header>
+          </div>
         ))}
-      </article>
-      <hr></hr>
-      <div>
-        <button onClick={() => refetch()}>Refetch</button>
-      </div>
-      <hr></hr>
+      </main>
+
+      {/* Footer */}
+      <footer className={styles.signInButtons}>
+        <Link to="/courses/create">
+          <button>Create a New Course</button>
+        </Link>
+        <Link to="/instructor">
+          <button>Instructor Sign In</button>
+        </Link>
+        <Link to="/admin">
+          <button>Admin Sign In</button>
+        </Link>
+        <Link to="/it">
+          <button>IT Sign In</button>
+        </Link>
+        <button onClick={() => refetch()}>Refetch Courses</button>
+      </footer>
     </div>
   );
 }
