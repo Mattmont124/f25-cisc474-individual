@@ -3,20 +3,23 @@ import {
   Get,
   Post,
   Body,
-  Param,
-  UseGuards,
   Patch,
+  Param,
   Delete,
+  UsePipes,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
-import { CourseService } from './courses.service';
+import { CoursesService } from './courses.service';
+import { CourseRef, CourseUpdateIn, CourseCreateIn } from '@repo/api/courses';
+import { ZodPipe } from 'src/zod_pipe';
 import { AuthGuard } from '@nestjs/passport';
-import { CurrentUser } from '../auth/current-user.decorator';
-import { CourseCreateIn, CourseUpdateIn } from '@repo/api/courses'; // shared DTO type
+import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
 
 @Controller('courses')
 export class CoursesController {
-  constructor(private readonly coursesService: CourseService) {}
+  constructor(private readonly coursesService: CoursesService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get()

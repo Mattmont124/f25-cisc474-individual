@@ -1,7 +1,7 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { useApiQuery, useCurrentUser } from '../../integrations/api';
-import type { CourseOut } from '@repo/api/courses';
+import { CourseOut } from '@repo/api';
 
 export const Route = createFileRoute('/courses/')({
   component: RouteComponent,

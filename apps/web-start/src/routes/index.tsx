@@ -2,6 +2,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useAuth0 } from '@auth0/auth0-react';
 import styles from '../styles/page.module.css';
+import LoginButton from '../components/LoginButton';
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -27,9 +28,7 @@ function RouteComponent() {
       </header>
 
       <main className={styles.classesGrid}>
-        <button className={styles.classBox} onClick={() => loginWithRedirect()}>
-          Login to Continue
-        </button>
+        <LoginButton />
       </main>
 
       <footer className={styles.signInButtons}>

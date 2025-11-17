@@ -1,26 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service'; // adjust path as needed
-import { CourseCreateIn, CourseOut, CourseUpdateIn } from '@repo/api/courses';
+import { CourseCreateIn, CourseUpdateIn, CourseOut } from '@repo/api/courses';
+import { PrismaService } from '../prisma.service';
+import { Course } from '@repo/database';
 
 @Injectable()
-export class CourseService {
-  // --- GET /courses ---
+export class CoursesService {
   constructor(private prisma: PrismaService) {}
-  async create (createCourse: CourseCreateIn): Promise<CourseOut> {
+  async create(createCourseDto: CourseCreateIn): Promise<CourseOut> {
     const newCourse = await this.prisma.course.create({
-      data: createCourse,
+      data: createCourseDto,
     });
     return {
       name: newCourse.name,
       description: newCourse.description,
-      ownerId: newCourse.id,
+      ownerId: newCourse.ownerId,
       id: newCourse.id,
       createdAt: newCourse.createdAt.toString(),
       updatedAt: newCourse.updatedAt.toString(),
-        };
+    };
   }
 
-  // --- GET /courses/:id ---
   findAll() {
     return this.prisma.course.findMany();
   }
@@ -42,5 +41,12 @@ export class CourseService {
     return this.prisma.course.delete({
       where: { id },
     });
+  }
+  getCourses() {
+    return [
+      { id: 1, name: 'CISC474', description: 'Web Applications' },
+      { id: 2, name: 'CISC275', description: 'Intro to Software Engineering' },
+      { id: 3, name: 'CISC361', description: 'Operating Systems' },
+    ];
   }
 }

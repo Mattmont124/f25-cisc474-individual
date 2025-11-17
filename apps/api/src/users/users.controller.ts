@@ -4,13 +4,13 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { UsersService } from './user.service';
+import { UsersService } from './users.service';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
-export class UserController {
+export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
@@ -46,6 +46,6 @@ export class UserController {
 
   @Get('by-email/:email')
   findByEmail(email: string) {
-    return this.usersService.findOne(email);
+    return this.usersService.findByEmail(email);
   }
 }

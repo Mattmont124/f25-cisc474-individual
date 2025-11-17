@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useApiMutation, useCurrentUser } from '../../integrations/api';
-import type { CourseCreateIn, CourseOut } from '@repo/api/courses';
+import { CourseCreateIn, CourseOut } from '@repo/api';
 
 export const Route = createFileRoute('/courses/create')({
   component: RouteComponent,
@@ -17,7 +17,7 @@ function RouteComponent() {
 
   const mutation = useApiMutation<CourseCreateIn, CourseOut>({
     endpoint: (variables) => ({
-      path: '/api/src/course',
+      path: '/courses',
       method: 'POST',
     }),
     invalidateKeys: [['courses']],
@@ -71,7 +71,7 @@ function RouteComponent() {
           </div>
           <hr></hr>
           <div>
-            <a href="/home">Back to Courses</a>
+            <a href="/courses">Back to Courses</a>
           </div>
         </>
       )}
