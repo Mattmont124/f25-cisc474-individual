@@ -5,7 +5,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   const allowedOrigins = [
-    process.env.VITE_FRONTEND_URL,
+    process.env.FRONTEND_URL,
   ];
 
   app.enableCors({
